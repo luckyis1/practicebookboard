@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">				 <!-- 맵핑파일 -->
+<mapper namespace="com.insung.BookMapper"> <!-- namespace+id로 찾는다 -->
+	<!-- 테스트용 -->
+	<select id="getNow" resultType="string">
+		select now()
+	</select>
+
+    <select id="selectList" resultType="com.insung.domain.BookVO">
+    	select * from tbl_book
+    </select>
+
+	<select id="selectOne" resultType="com.insung.domain.BookVO" parameterType="int"> 
+ 		select * from tbl_book where bno=#{bno} 
+ 	</select> 
+
+ 	<insert id="insert" parameterType="com.insung.domain.BookVO"> 
+ 		insert into tbl_book(book_name, name, author, price, regdate) values(#{book_name},#{name},#{author},#{price}, now() )
+ 	</insert >   	
+  	
+  	<update id="update" parameterType="com.insung.domain.BookVO"> 
+ 		update tbl_book set book_name=#{book_name},name=#{name}, author=#{author}, price=#{price}, regdate=now() where bno= #{bno}  
+ 	</update> 
+ 
+ 	<delete id="delete"> 
+ 		delete from tbl_book where bno = #{bno} 
+ 	</delete> 
+ 	
+ 	<select id="listpage" resultType="com.insung.domain.BookVO">
+ 		<![CDATA[
+ 		select book_name, name, author, price, regdate, bno from tbl_book where bno > 0 order by bno desc limit #{page}, 10
+ 		]]>
+ 	</select>
+ 	
+ 	<select id="listCriteria" resultType="com.insung.domain.BookVO">
+ 		<![CDATA[
+ 		select book_name, name, author, price, regdate, bno from tbl_book where bno > 0 order by bno desc limit #{pageStart}, #{perPageNum}
+ 		]]>
+ 	</select>
+	
+	<select id="countPaging" resultType="int">
+		<![CDATA[
+		select count(bno) from tbl_book where bno > 0
+		]]>
+	</select>
+ 	 
+</mapper>
